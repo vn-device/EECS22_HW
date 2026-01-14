@@ -419,9 +419,9 @@ void Negative(unsigned char R[WIDTH][HEIGHT],
     /* Body of Negative */
     for (int yPt = 0; yPt < HEIGHT; yPt++) {
         for (int xPt = 0; xPt < WIDTH; xPt++) {
-            R[xPt][yPt] -= 255;
-            G[xPt][yPt] -= 255;
-            B[xPt][yPt] -= 255;
+            R[xPt][yPt] = 255 - R[xPt][yPt];
+            G[xPt][yPt] = 255 - G[xPt][yPt];
+            B[xPt][yPt] = 255 - B[xPt][yPt];    
         }
     }
     
