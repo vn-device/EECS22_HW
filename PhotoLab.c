@@ -465,6 +465,60 @@ void Edge(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of Edge */
+    unsigned char tmpR[WIDTH][HEIGHT] = {0};
+    unsigned char tmpG[WIDTH][HEIGHT] = {0};
+    unsigned char tmpB[WIDTH][HEIGHT] = {0};
+
+    /* Adjusting loop range to avoid boundary pixels */
+    for (int yPt = 1; yPt < HEIGHT - 1; yPt++)
+    {
+        for (int xPt = 1; xPt < WIDTH - 1; xPt++)
+        {
+            /* Adjust Red component for center pixel */
+            int pixelA = (int)(R[xPt - 1][yPt - 1]) * -1;
+            int pixelB = (int)(R[xPt][yPt - 1]    ) * -1;
+            int pixelC = (int)(R[xPt + 1][yPt - 1]) * -1;
+            int pixelD = (int)(R[xPt - 1][yPt]    ) * -1;
+            int pixelE = (int)(R[xPt][yPt]        ) *  8;
+            int pixelF = (int)(R[xPt + 1][yPt]    ) * -1;
+            int pixelG = (int)(R[xPt - 1][yPt + 1]) * -1;
+            int pixelH = (int)(R[xPt][yPt + 1]    ) * -1;
+            int pixelI = (int)(R[xPt + 1][yPt + 1]) * -1;
+            int saturatedVal = pixelA + pixelB + pixelC + pixelD + pixelE + pixelF + pixelG + pixelH + pixelI;
+            tmpR[xPt][yPt] = (unsigned char)( (saturatedVal < 0) ? 0 : (saturatedVal > 255) ? 255 : saturatedVal);
+        
+            /* Adjust Green component for center pixel */
+            pixelA = (int)(G[xPt - 1][yPt - 1]) * -1;
+            pixelB = (int)(G[xPt][yPt - 1]    ) * -1;
+            pixelC = (int)(G[xPt + 1][yPt - 1]) * -1;
+            pixelD = (int)(G[xPt - 1][yPt]    ) * -1;
+            pixelE = (int)(G[xPt][yPt]        ) *  8;
+            pixelF = (int)(G[xPt + 1][yPt]    ) * -1;
+            pixelG = (int)(G[xPt - 1][yPt + 1]) * -1;
+            pixelH = (int)(G[xPt][yPt + 1]    ) * -1;
+            pixelI = (int)(G[xPt + 1][yPt + 1]) * -1;
+            saturatedVal = pixelA + pixelB + pixelC + pixelD + pixelE + pixelF + pixelG + pixelH + pixelI;
+            tmpG[xPt][yPt] = (unsigned char)( (saturatedVal < 0) ? 0 : (saturatedVal > 255) ? 255 : saturatedVal);
+
+            /* Adjust Blue component for center pixel */
+            pixelA = (int)(B[xPt - 1][yPt - 1]) * -1;
+            pixelB = (int)(B[xPt][yPt - 1]    ) * -1;
+            pixelC = (int)(B[xPt + 1][yPt - 1]) * -1;
+            pixelD = (int)(B[xPt - 1][yPt]    ) * -1;
+            pixelE = (int)(B[xPt][yPt]        ) *  8;
+            pixelF = (int)(B[xPt + 1][yPt]    ) * -1;
+            pixelG = (int)(B[xPt - 1][yPt + 1]) * -1;
+            pixelH = (int)(B[xPt][yPt + 1]    ) * -1;
+            pixelI = (int)(B[xPt + 1][yPt + 1]) * -1;
+            saturatedVal = pixelA + pixelB + pixelC + pixelD + pixelE + pixelF + pixelG + pixelH + pixelI;
+            tmpB[xPt][yPt] = (unsigned char)( (saturatedVal < 0) ? 0 : (saturatedVal > 255) ? 255 : saturatedVal);
+        }
+    }
+
+    /* Copy temporary arrays back to original arrays */
+    memcpy(R, tmpR, sizeof(unsigned char) * WIDTH * HEIGHT);
+    memcpy(G, tmpG, sizeof(unsigned char) * WIDTH * HEIGHT);
+    memcpy(B, tmpB, sizeof(unsigned char) * WIDTH * HEIGHT);
 
     /* End of Edge */
     printf("\"Edge\" operation is done!\n");
@@ -508,6 +562,13 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
 	    char color[SLEN], int border_width)
 {
     /* Body of AddBorder */
+    int borderPix = 0;
+    while (borderPix < border_width) {
+        // Placeholder
+        
+        /* Update borderPix counter at the end */
+        borderPix++;
+    }
 
     /* End of AddBorder */
     printf("\"Border\" operation is done!\n");
