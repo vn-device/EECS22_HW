@@ -506,6 +506,24 @@ void HFlip(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of HFlip */
+    for (int yPt = 0; yPt < HEIGHT; yPt++) {
+        for (int xPt = 0; xPt < WIDTH / 2; xPt++) {
+            /* Swap R intensities */
+            unsigned char currentVal = R[xPt][yPt];
+            R[xPt][yPt] = R[WIDTH - 1 - xPt][yPt];
+            R[WIDTH - 1 - xPt][yPt] = currentVal;
+            
+            /* Swap G intensities */
+            currentVal = G[xPt][yPt];
+            G[xPt][yPt] = G[WIDTH - 1 - xPt][yPt];
+            G[WIDTH - 1 - xPt][yPt] = currentVal;
+
+            /* Swap B intensities */
+            currentVal = B[xPt][yPt];
+            B[xPt][yPt] = B[WIDTH - 1 - xPt][yPt];
+            B[WIDTH - 1 - xPt][yPt] = currentVal;
+        }
+    }
 
     /* End of HFlip */
     printf("\"HFlip\" operation is done!\n");
