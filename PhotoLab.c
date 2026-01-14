@@ -42,70 +42,70 @@ void ParseMenuOption(const int* option,
 
 /* read image from a file */
 int LoadImage(const char fname[SLEN],
-	      unsigned char R[WIDTH][HEIGHT],
-	      unsigned char G[WIDTH][HEIGHT],
-	      unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char R[WIDTH][HEIGHT],
+	    unsigned char G[WIDTH][HEIGHT],
+	    unsigned char B[WIDTH][HEIGHT]);
 
 /* save a processed image */
 int SaveImage(const char fname[SLEN],
-	      unsigned char R[WIDTH][HEIGHT],
-	      unsigned char G[WIDTH][HEIGHT],
-	      unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char R[WIDTH][HEIGHT],
+	    unsigned char G[WIDTH][HEIGHT],
+	    unsigned char B[WIDTH][HEIGHT]);
 
 /* change a color image to black & white */
 void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
-		 unsigned char G[WIDTH][HEIGHT],
-		 unsigned char B[WIDTH][HEIGHT]);
+		unsigned char G[WIDTH][HEIGHT],
+		unsigned char B[WIDTH][HEIGHT]);
 
 /* reverse image color */
 void Negative(unsigned char R[WIDTH][HEIGHT],
-	      unsigned char G[WIDTH][HEIGHT],
-	      unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char G[WIDTH][HEIGHT],
+	    unsigned char B[WIDTH][HEIGHT]);
 
 /* color filter */
 void ColorFilter(unsigned char R[WIDTH][HEIGHT],
-		 unsigned char G[WIDTH][HEIGHT],
-                 unsigned char B[WIDTH][HEIGHT],
-		 int target_r, int target_g, int target_b, int threshold,
-		 int replace_r, int replace_g, int replace_b);
+		unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT],
+		int target_r, int target_g, int target_b, int threshold,
+		int replace_r, int replace_g, int replace_b);
 
 /* edge detection */
 void Edge(unsigned char R[WIDTH][HEIGHT],
-	  unsigned char G[WIDTH][HEIGHT],
-          unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT]);
 
 /* mirror image Vertically */
 void VMirror(unsigned char R[WIDTH][HEIGHT],
-	     unsigned char G[WIDTH][HEIGHT],
-             unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT]);
 
 /* shuffle the image */
 void Shuffle(unsigned char R[WIDTH][HEIGHT],
-	     unsigned char G[WIDTH][HEIGHT],
-             unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT]);
 
 
 /* add border */
 void AddBorder(unsigned char R[WIDTH][HEIGHT],
-	       unsigned char G[WIDTH][HEIGHT],
-               unsigned char B[WIDTH][HEIGHT],
-	       char color[SLEN], int border_width);
+	    unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT],
+	    char color[SLEN], int border_width);
 
 /* support function for AddBorder */
 void DetermineColorChannels(char color[SLEN],
-                unsigned char* R_val,
-                unsigned char* G_val,
-                unsigned char* B_val);
+        unsigned char* R_val,
+        unsigned char* G_val,
+        unsigned char* B_val);
 
 /* flip image horizontally */
 void HFlip(unsigned char R[WIDTH][HEIGHT],
-	   unsigned char G[WIDTH][HEIGHT],
-           unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char G[WIDTH][HEIGHT],
+        unsigned char B[WIDTH][HEIGHT]);
 
 /* test all functions */
 void AutoTest(unsigned char R[WIDTH][HEIGHT],
-	      unsigned char G[WIDTH][HEIGHT],
-	      unsigned char B[WIDTH][HEIGHT]);
+	    unsigned char G[WIDTH][HEIGHT],
+	    unsigned char B[WIDTH][HEIGHT]);
 
 int main(void)
 {
@@ -399,8 +399,9 @@ void BlackNWhite(unsigned char R[WIDTH][HEIGHT],
 		unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of BlackNWhite */
-    for (int yPt = 0; yPt < HEIGHT; yPt++) {
-        for (int xPt = 0; xPt < WIDTH; xPt++) {
+    int xPt, yPt;
+    for (yPt = 0; yPt < HEIGHT; yPt++) {
+        for (xPt = 0; xPt < WIDTH; xPt++) {
             unsigned char newVal = (R[xPt][yPt] + G[xPt][yPt] + B[xPt][yPt]) / 3;
             R[xPt][yPt] = G[xPt][yPt] = B[xPt][yPt] = newVal;
         }
@@ -415,8 +416,9 @@ void Negative(unsigned char R[WIDTH][HEIGHT],
 	    unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of Negative */
-    for (int yPt = 0; yPt < HEIGHT; yPt++) {
-        for (int xPt = 0; xPt < WIDTH; xPt++) {
+    int xPt, yPt;
+    for (yPt = 0; yPt < HEIGHT; yPt++) {
+        for (xPt = 0; xPt < WIDTH; xPt++) {
             R[xPt][yPt] = 255 - R[xPt][yPt];
             G[xPt][yPt] = 255 - G[xPt][yPt];
             B[xPt][yPt] = 255 - B[xPt][yPt];    
@@ -434,9 +436,10 @@ void ColorFilter(unsigned char R[WIDTH][HEIGHT],
 		int replace_r, int replace_g, int replace_b)
 { 
     /* Body of ColorFilter */
-    for (int yPt = 0; yPt < HEIGHT; yPt++)
+    int xPt, yPt;
+    for (yPt = 0; yPt < HEIGHT; yPt++)
     {
-        for (int xPt = 0; xPt < WIDTH; xPt++)
+        for (xPt = 0; xPt < WIDTH; xPt++)
         {
             unsigned char currentR = R[xPt][yPt];
             unsigned char currentG = G[xPt][yPt];
@@ -470,9 +473,10 @@ void Edge(unsigned char R[WIDTH][HEIGHT],
     unsigned char tmpB[WIDTH][HEIGHT] = {0};
 
     /* Adjusting loop range to avoid boundary pixels */
-    for (int yPt = 1; yPt < HEIGHT - 1; yPt++)
+    int xPt, yPt;
+    for (yPt = 1; yPt < HEIGHT - 1; yPt++)
     {
-        for (int xPt = 1; xPt < WIDTH - 1; xPt++)
+        for (xPt = 1; xPt < WIDTH - 1; xPt++)
         {
             /* Adjust Red component for center pixel */
             int pixelA = (int)(R[xPt - 1][yPt - 1]) * -1;
@@ -529,9 +533,10 @@ void VMirror(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of VMirror */
-    for (int yPt = 0; yPt < HEIGHT / 2; yPt++)
+    int xPt, yPt;
+    for (yPt = 0; yPt < HEIGHT / 2; yPt++)
     {
-        for (int xPt = 0; xPt < WIDTH; xPt++)
+        for (xPt = 0; xPt < WIDTH; xPt++)
         {
             /* Swap R intensities */
             R[xPt][HEIGHT - 1 - yPt] = R[xPt][yPt];;
@@ -556,10 +561,11 @@ void Shuffle(unsigned char R[WIDTH][HEIGHT],
     int blockWidth = WIDTH / 4, blockHeight = HEIGHT / 4;
 
     /* Loop through 8 pairs of blocks */
-    for (int i = 0; i < 8; i++)
+    int pairCount, xPt, yPt;
+    for (pairCount = 0; pairCount < 8; pairCount++)
     {
         /* Determine pair we're shuffling */
-        int blockAID = i + 1, blockBID = 16 - i;
+        int blockAID = pairCount + 1, blockBID = 16 - pairCount;
 
         /* Determine starting (x, y) coords for each block pair */
         int blockAX = ( (blockAID - 1) % 4) * blockWidth;
@@ -567,9 +573,9 @@ void Shuffle(unsigned char R[WIDTH][HEIGHT],
         int blockBX = ( (blockBID - 1) % 4) * blockWidth;
         int blockBY = ( (blockBID - 1) / 4) * blockHeight;
 
-        for (int yPt = 0; yPt < blockHeight; yPt++)
+        for (yPt = 0; yPt < blockHeight; yPt++)
         {
-            for (int xPt = 0; xPt < blockWidth; xPt++)
+            for (xPt = 0; xPt < blockWidth; xPt++)
             {
                 /* Swap pixels for Red component */
                 unsigned char tmpVal = R[blockAX + xPt][blockAY + yPt];
@@ -605,10 +611,11 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
     int startAX = 0, startBX = WIDTH - border_width;
     int startAY = 0, startBY = HEIGHT - border_width;
 
-    for (int borderPix = 0; borderPix < border_width; borderPix++)
+    int borderPix, xPt, yPt;
+    for (borderPix = 0; borderPix < border_width; borderPix++)
     {
         /* Top | Bottom borders */
-        for (int xPt = 0; xPt < WIDTH; xPt++)
+        for (xPt = 0; xPt < WIDTH; xPt++)
         {
             R[xPt][startAY + borderPix] = valR;
             G[xPt][startAY + borderPix] = valG;
@@ -620,7 +627,7 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
         }
 
         /* Left | Right borders */
-        for (int yPt = 0; yPt < HEIGHT; yPt++)
+        for (yPt = 0; yPt < HEIGHT; yPt++)
         {
             R[startAX + borderPix][yPt] = valR;
             G[startAX + borderPix][yPt] = valG;
@@ -699,8 +706,11 @@ void HFlip(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of HFlip */
-    for (int yPt = 0; yPt < HEIGHT; yPt++) {
-        for (int xPt = 0; xPt < WIDTH / 2; xPt++) {
+    int xPt, yPt;
+    for (yPt = 0; yPt < HEIGHT; yPt++)
+    {
+        for (xPt = 0; xPt < WIDTH / 2; xPt++)
+        {
             /* Swap R intensities */
             unsigned char currentVal = R[xPt][yPt];
             R[xPt][yPt] = R[WIDTH - 1 - xPt][yPt];
