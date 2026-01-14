@@ -475,6 +475,18 @@ void VMirror(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of VMirror */
+    for (int yPt = 0; yPt < HEIGHT / 2; yPt++) {
+        for (int xPt = 0; xPt < WIDTH; xPt++) {
+            /* Swap R intensities */
+            R[xPt][HEIGHT - 1 - yPt] = R[xPt][yPt];;
+            
+            /* Swap G intensities */
+            G[xPt][HEIGHT - 1 - yPt] = G[xPt][yPt];
+
+            /* Swap B intensities */
+            B[xPt][HEIGHT - 1 - yPt] = B[xPt][yPt];
+        }
+    }
     
     /* End of VMirror */
     printf("\"VMirror\" operation is done!\n");
