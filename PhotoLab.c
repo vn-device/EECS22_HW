@@ -551,7 +551,42 @@ void Shuffle(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of Shuffle */
-    
+    int blockWidth = WIDTH / 4, blockHeight = HEIGHT / 4;
+
+    /* Loop through 8 pairs of blocks */
+    for (int i = 0; i < 8; i++)
+    {
+        /* Determine pair we're shuffling */
+        int blockAID = i + 1, blockBID = 16 - i;
+
+        /* Determine starting (x, y) coords for each block pair */
+        int blockAX = ( (blockAID - 1) % 4) * blockWidth;
+        int blockAY = ( (blockAID - 1) / 4) * blockHeight;
+        int blockBX = ( (blockBID - 1) % 4) * blockWidth;
+        int blockBY = ( (blockBID - 1) / 4) * blockHeight;
+
+        for (int yPt = 0; yPt < blockHeight; yPt++)
+        {
+            for (int xPt = 0; xPt < blockWidth; xPt++)
+            {
+                /* Swap pixels for Red component */
+                unsigned char tmpVal = R[blockAX + xPt][blockAY + yPt];
+                R[blockAX + xPt][blockAY + yPt] = R[blockBX + xPt][blockBY + yPt];
+                R[blockBX + xPt][blockBY + yPt] = tmpVal;
+
+                /* Swap pixels for Green component */
+                tmpVal = G[blockAX + xPt][blockAY + yPt];
+                G[blockAX + xPt][blockAY + yPt] = G[blockBX + xPt][blockBY + yPt];
+                G[blockBX + xPt][blockBY + yPt] = tmpVal;
+
+                /* Swap pixels for Blue component */
+                tmpVal = B[blockAX + xPt][blockAY + yPt];
+                B[blockAX + xPt][blockAY + yPt] = B[blockBX + xPt][blockBY + yPt];
+                B[blockBX + xPt][blockBY + yPt] = tmpVal;
+            }
+        }
+    }
+
     /* End of Shuffle */
     printf("\"Shuffle\" operation is done!\n");
 }
