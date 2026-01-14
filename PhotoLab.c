@@ -91,6 +91,12 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
                unsigned char B[WIDTH][HEIGHT],
 	       char color[SLEN], int border_width);
 
+/* support function for AddBorder */
+void DetermineColorChannels(char color[SLEN],
+                unsigned char* R_val,
+                unsigned char* G_val,
+                unsigned char* B_val);
+
 /* flip image horizontally */
 void HFlip(unsigned char R[WIDTH][HEIGHT],
 	   unsigned char G[WIDTH][HEIGHT],
@@ -109,13 +115,6 @@ int main(void)
     unsigned char   G[WIDTH][HEIGHT];
     unsigned char   B[WIDTH][HEIGHT];
 
-    /* Please replace the following code with proper menu with function calls for DIP operations */
-    /* if (LoadImage("EngHall", R, G, B) != 0)
-    {
-      return 1;
-    }
-    */
-
     int userOption = 0;
     while (userOption != USER_OPTIONS_EXIT) {
         PrintMenu();
@@ -124,7 +123,6 @@ int main(void)
         ParseMenuOption(&userOption, R, G, B);
     }
     
-
     /* End of replacing */
 
     return 0;
@@ -436,8 +434,10 @@ void ColorFilter(unsigned char R[WIDTH][HEIGHT],
 		int replace_r, int replace_g, int replace_b)
 { 
     /* Body of ColorFilter */
-    for (int yPt = 0; yPt < HEIGHT; yPt++) {
-        for (int xPt = 0; xPt < WIDTH; xPt++) {
+    for (int yPt = 0; yPt < HEIGHT; yPt++)
+    {
+        for (int xPt = 0; xPt < WIDTH; xPt++)
+        {
             unsigned char currentR = R[xPt][yPt];
             unsigned char currentG = G[xPt][yPt];
             unsigned char currentB = B[xPt][yPt];
@@ -529,8 +529,10 @@ void VMirror(unsigned char R[WIDTH][HEIGHT],
         unsigned char B[WIDTH][HEIGHT])
 {
     /* Body of VMirror */
-    for (int yPt = 0; yPt < HEIGHT / 2; yPt++) {
-        for (int xPt = 0; xPt < WIDTH; xPt++) {
+    for (int yPt = 0; yPt < HEIGHT / 2; yPt++)
+    {
+        for (int xPt = 0; xPt < WIDTH; xPt++)
+        {
             /* Swap R intensities */
             R[xPt][HEIGHT - 1 - yPt] = R[xPt][yPt];;
             
@@ -597,16 +599,99 @@ void AddBorder(unsigned char R[WIDTH][HEIGHT],
 	    char color[SLEN], int border_width)
 {
     /* Body of AddBorder */
-    int borderPix = 0;
-    while (borderPix < border_width) {
-        // Placeholder
-        
-        /* Update borderPix counter at the end */
-        borderPix++;
+    unsigned char valR, valG, valB;
+    DetermineColorChannels(color, &valR, &valG, &valB);
+
+    int startAX = 0, startBX = WIDTH - border_width;
+    int startAY = 0, startBY = HEIGHT - border_width;
+
+    for (int borderPix = 0; borderPix < border_width; borderPix++)
+    {
+        /* Top | Bottom borders */
+        for (int xPt = 0; xPt < WIDTH; xPt++)
+        {
+            R[xPt][startAY + borderPix] = valR;
+            G[xPt][startAY + borderPix] = valG;
+            B[xPt][startAY + borderPix] = valB;
+
+            R[xPt][startBY + borderPix] = valR;
+            G[xPt][startBY + borderPix] = valG;
+            B[xPt][startBY + borderPix] = valB;
+        }
+
+        /* Left | Right borders */
+        for (int yPt = 0; yPt < HEIGHT; yPt++)
+        {
+            R[startAX + borderPix][yPt] = valR;
+            G[startAX + borderPix][yPt] = valG;
+            B[startAX + borderPix][yPt] = valB;
+
+            R[startBX + borderPix][yPt] = valR;
+            G[startBX + borderPix][yPt] = valG;
+            B[startBX + borderPix][yPt] = valB;
+        }
     }
 
     /* End of AddBorder */
     printf("\"Border\" operation is done!\n");
+}
+
+void DetermineColorChannels(char color[SLEN],
+        unsigned char* R_val,
+        unsigned char* G_val,
+        unsigned char* B_val)
+{
+    if (strstr(color, "black") != NULL) {
+        *R_val = 0;
+        *G_val = 0;
+        *B_val = 0;
+    }
+    else if (strstr(color, "white") != NULL) {
+        *R_val = 255;
+        *G_val = 255;
+        *B_val = 255;
+    }
+    else if (strstr(color, "red") != NULL) {
+        *R_val = 255;
+        *G_val = 0;
+        *B_val = 0;
+    }
+    else if (strstr(color, "green") != NULL) {
+        *R_val = 0;
+        *G_val = 255;
+        *B_val = 0;
+    }
+    else if (strstr(color, "blue") != NULL) {
+        *R_val = 0;
+        *G_val = 0;
+        *B_val = 255;
+    }
+    else if (strstr(color, "yellow") != NULL) {
+        *R_val = 255;
+        *G_val = 255;
+        *B_val = 0;
+    }
+    else if (strstr(color, "cyan") != NULL) {
+        *R_val = 0;
+        *G_val = 255;
+        *B_val = 255;
+    }
+    else if (strstr(color, "pink") != NULL) {
+        *R_val = 255;
+        *G_val = 192;
+        *B_val = 203;
+    }
+    else if (strstr(color, "orange") != NULL) {
+        *R_val = 255;
+        *G_val = 165;
+        *B_val = 0;
+    }
+    else {
+        /* Default to black if color not recognized */
+        *R_val = 0;
+        *G_val = 0;
+        *B_val = 0;
+    }
 }
 
 void HFlip(unsigned char R[WIDTH][HEIGHT],
